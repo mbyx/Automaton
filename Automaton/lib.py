@@ -7,7 +7,7 @@ gi.require_version('Wnck', '3.0')
 from dataclasses import dataclass
 from select import select
 import atexit, evdev
-from key import Key
+from .key import Key
 
 # Add Dialogues
 import zenipy as Dialog
