@@ -2,7 +2,11 @@
 
 ### Note
 Automaton supports only linux, with distributions that use gtk. For example, Ubuntu 20.04
-
+Automaton uses uinput in order to work. Therefore, install automaton and run its apps via
+```shell
+sudo pip3.9 install automaton
+sudo python3.9 main.py # Where main.py is an automaton app
+```
 ### What is it
 Automaton is a collection of libraries and custom modules designed to provide the easiest
 interface to use when automating things in linux. It has support for:
