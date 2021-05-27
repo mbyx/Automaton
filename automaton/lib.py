@@ -1,4 +1,5 @@
-# Fix to make gi work.
+# Fix to make gi work, but first:
+# TODO(Abdul-Muiz-Iqbal): Add comments/docs.
 import pgi
 pgi.install_as_gi()
 import gi
