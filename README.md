@@ -1,12 +1,19 @@
 # Automaton - A Linux Automation Library
 
 ### Note
-Automaton supports only linux, with distributions that use gtk. For example, Ubuntu
+Automaton supports only linux, with distributions that use gtk. For example, Ubuntu 20.04
 
 ### What is it
 Automaton is a collection of libraries and custom modules designed to provide the easiest
-interface to use when automating things in linux. It has support for Dialogs, ContextMenus,
-Window manipulation and queries, keyboard and mouse manipulation and queries, hotkeys, hotstrings, and remaps.
+interface to use when automating things in linux. It has support for:
+- Dialogs
+- ContextMenus
+- Window manipulation and queries
+- keyboard and mouse manipulation and queries
+- Hotkeys
+- Hotstrings
+- Remaps
+
 ### Usage
 A simple Automaton script looks like this:
 ```python3
@@ -20,9 +27,14 @@ def btw():
 
 app.listen()
 ```
-More info in the (non-existant) docs.
+More info in the (non-existant) docs. Till the docs are fixed, take a look at the examples!
 
 ### Requirements
 - Python 3.9+
-- Wnck
+- Tkinter
+```
+$ sudo apt-get -y update && \
+    apt-get -y upgrade && \
+    apt-get -y install libglib2.0-0 libgirepository-1.0-1
+```
 - Whatever is in requirements.txt (duh!)
