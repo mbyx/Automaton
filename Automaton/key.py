@@ -2,6 +2,7 @@ from evdev import ecodes as code
 from enum import Enum
 
 class Key:
+    """A simple alias for some of the most used keys in evdev.ecodes"""
     Reserved = code.KEY_RESERVED
     Esc = code.KEY_ESC
     Num1 = code.KEY_1
@@ -169,3 +170,4 @@ class Key:
     Zoom = code.KEY_ZOOM
     Paste = code.KEY_PASTE
     Copy = code.KEY_COPY
+    AppsKey = code.KEY_CONTEXT_MENU

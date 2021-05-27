@@ -22,10 +22,15 @@ OPTIONS = {
 
 @dataclass
 class ContextMenu:
+    """A Context Menu created from tkinter. It uses nested dictionaries in order to
+    specify callbacks and menu items. Separators can be added with the special ---
+    string. A function ignore is given to improve this process."""
     tree: dict[str, Any]
     menu = None
 
     def at(self, x: int, y: int):
+        """Display the context menu at the specified position. All events will be directed
+        to the menu while in focus."""
         self.build(ROOT)
         try:
             self.menu.tk_popup(x, y)
@@ -34,6 +39,7 @@ class ContextMenu:
             self.menu.grab_release()
 
     def build(self, root):
+        """Builds a tk.Menu from the nested dictionary. Mainly an internal function."""
         self.menu = tk.Menu(root, tearoff=0, **OPTIONS)
         for name, value in self.tree.items():
             if isinstance(value, dict):

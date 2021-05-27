@@ -3,26 +3,31 @@ import pgi
 pgi.install_as_gi()
 import gi
 gi.require_version('Wnck', '3.0')
+gi.require_version('Gtk', '3.0')
 
 from typing import Iterator, Optional
 from dataclasses import dataclass
-from gi.repository import Wnck
+from gi.repository import Wnck, Gtk
 
 @dataclass
 class Window:
+    """A wrapper around Wnck providing methods to manipulate and query windows."""
     window: Wnck.Window
+    screen = Wnck.Screen.get_default()
 
     @classmethod
     def get_all_windows(cls) -> Iterator:
-        screen = Wnck.Screen.get_default()
-        screen.force_update()
-        return map(Window, screen.get_windows())
+        cls.screen.force_update()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        return map(Window, cls.screen.get_windows())
 
     @classmethod
     def get_active_window(cls):
-        screen = Wnck.Screen.get_default()
-        screen.force_update()
-        return Window(screen.get_active_window())
+        cls.screen.force_update()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        return Window(cls.screen.get_active_window())
 
     def activate(self):
         self.window.activate(1)
@@ -115,7 +120,6 @@ class Window:
         for window in cls.get_all_windows():
             # Strict disabled; Title doesnt have to match exactly
             name = window.window.get_name()
-            print(name)
             if strict:
                 cond = title == name
             else:
