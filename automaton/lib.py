@@ -93,7 +93,7 @@ class Keyboard:
         else:
             return False
 
-    def _is_lock_key(key: Key) -> bool:
+    def _is_lock_key(self, key: Key) -> bool:
         return key in [Key.NumLock, Key.CapsLock, Key.ScrollLock]
 
 
@@ -129,7 +129,7 @@ class Mouse:
         self.ui.write(evdev.ecodes.EV_REL, evdev.ecodes.REL_Y, y)
         self.ui.syn()
 
-    def _is_mouse_button(key: Key) -> bool:
+    def _is_mouse_button(self, key: Key) -> bool:
         if key in [Key.LeftButton, Key.RightButton, Key.MiddleButton, Key.XButton, Key.SideButton]:
             return True
         return False
