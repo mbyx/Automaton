@@ -8,7 +8,7 @@ RUN apt-get -y update && \
     apt-get -y upgrade && \
     apt-get -y install libglib2.0-0 libgirepository-1.0-1
 
-ENV TZ=Asia/Dubai
+ENV TZ=Asia/Dubai # Change to your time zone.
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt install -y tzdata
