@@ -1,4 +1,4 @@
-from automaton import ContextMenu, ignore
+from automaton.menu import ContextMenu, ignore
 
 # Create a context menu from a dictionary
 ContextMenu({

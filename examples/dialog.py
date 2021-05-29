@@ -1,4 +1,4 @@
-from automaton import Dialog
+from automaton.automaton import Dialog
 
 
 # This is an alias to zenipy. Nothing more, nothing less.

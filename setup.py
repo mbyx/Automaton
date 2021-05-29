@@ -2,13 +2,13 @@ from distutils.core import setup
 setup(
     name='automaton-linux',
     packages=["automaton"],
-    version='0.4',
+    version='0.5',
     license='MIT',
     description='An automation library for Linux using Uinput.',
     author='Abdul Muiz Iqbal',
     author_email='parkermuiz0@gmail.com',
     url='https://github.com/Abdul-Muiz-Iqbal/Automaton/',
-    download_url='https://github.com/Abdul-Muiz-Iqbal/Automaton/archive/refs/tags/0.4.tar.gz',
+    download_url='https://github.com/Abdul-Muiz-Iqbal/Automaton/archive/refs/tags/0.5.tar.gz',
     keywords=['automation', 'linux', 'uinput'],
     install_requires=[
         'evdev',

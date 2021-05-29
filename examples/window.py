@@ -1,11 +1,11 @@
-from automaton import Window
+from automaton.window import Window
 
 # Print the names of all open windows.
 for window in Window.get_all_windows():
     print(window.name)
 
 # Get a window with the word YouTube in its title.
-wnd: Window = Window.get('YouTube') # It also takes a keyword arg called strict=False, which forces the title to exactly match the title.
+wnd: Window = Window.get('YouTube') # It also takes a keyword arg called strict=False, which forces `title` to exactly match the real title.
 if wnd is not None: # It returns None if no matching window was found.
     window \
         .minimize() \

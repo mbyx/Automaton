@@ -1,4 +1,4 @@
-from automaton import Automaton, Key, RELEASE
+from automaton.automaton import Automaton, Key, RELEASE
 import datetime
 
 # Create an instance of Automaton.
