@@ -7,6 +7,7 @@ Automaton uses uinput in order to work. Therefore, install Automaton and run its
 sudo pip3.9 install automaton
 sudo python3.9 main.py # main.py contains the Automaton app
 ```
+That is, unless you are using everything _other_ than the main Automaton class
 ### What is it
 Automaton is a collection of libraries and custom modules designed to provide the easiest
 interface to use when automating things in Linux. It has support for:
@@ -18,7 +19,7 @@ interface to use when automating things in Linux. It has support for:
 ### Usage
 A simple Automaton script looks like:
 ```python3
-from automaton import Automaton
+from automaton.automaton import Automaton
 
 app = Automaton()
 
