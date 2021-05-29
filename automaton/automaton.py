@@ -21,9 +21,6 @@ from .consts import (
     CHAR_CODES
 )
 
-# Add Dialogues
-import zenipy as Dialog
-
 
 @dataclass
 class Automaton:
