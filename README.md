@@ -4,7 +4,7 @@
 Automaton supports only Linux, more specifically Linux distributions that use [GTK](https://www.gtk.org/), for example Ubuntu 20.04.
 Automaton uses uinput in order to work. Therefore, install Automaton and run its apps via:
 ```shell
-sudo pip3.9 install automaton
+sudo pip3.9 install automaton-linux
 sudo python3.9 main.py # main.py contains the Automaton app
 ```
 That is, unless you are using everything _other_ than the main Automaton class
