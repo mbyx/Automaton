@@ -8,8 +8,17 @@ app = Automaton()
 app.kb.press(Key.LShift)
 app.kb.release(Key.LShift) # Release the left shift key, if its pressed.
 
+# You can press, release, or tap multiple keys at the same time:
+app.kb.press(Key.LCtrl, Key.LShift)
+app.kb.release(Key.LCtrl, Key.LShift)
+
+app.kb.tap(Key.LCtrl, Key.LShift)
+
+
 app.kb.tap(Key.LShift) # Presses and releases the left shift key
-app.kb.type("Hello, World!") # Types a string. MUST be ascii
+# NOTE: This method works only on Gtk apps. Use type_ascii for a general one. But the latter
+# doesn't support unicode.
+app.kb.type("Hello, World!") # Types a string. Can be any utf-8 value.
 
 app.kb.is_pressed(Key.LShift) # Returns True if left shift is pressed.
 app.kb.is_toggled(Key.CapsLock) # Returns True if capslock is toggled on

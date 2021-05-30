@@ -35,4 +35,11 @@ app.remap(Key.K, Key.A, register_if = lambda: 1 == 2)
 # Remap only feature. You can activate the remap when the key is released instead of when its pressed.
 app.remap(Key.B, Key.A, fire_on = RELEASE)
 
+# You can also emit callbacks when any key is pressed or released:
+app.on_press(lambda event: print(event.code))
+app.on_release(lambda event: print(event.code))
+
+# Multiple callbacks are allowed.
+app.on_press(lambda event: print(event.value))
+
 app.listen() # Start listening and redirecting events. Hotkeys and such won't work without this.

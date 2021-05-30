@@ -12,23 +12,35 @@ class Keyboard:
     """Internally used to provide keyboard input and query it."""
     ui: evdev.UInput
 
-    def press(self, key: Key):
-        """Presses the specified key. Syncs immediately."""
-        self.ui.write(evdev.ecodes.EV_KEY, key, 1)
-        self.ui.syn()
+    def press(self, *keys: Key):
+        """Presses the specified key/keys. Syncs immediately."""
+        for key in keys:
+            self.ui.write(evdev.ecodes.EV_KEY, key, 1)
+            self.ui.syn()
 
-    def release(self, key: Key):
-        """Releases the specified key. Syncs immediately."""
-        self.ui.write(evdev.ecodes.EV_KEY, key, 0)
-        self.ui.syn()
+    def release(self, *keys: Key):
+        """Releases the specified key/keys. Syncs immediately."""
+        for key in keys:
+            self.ui.write(evdev.ecodes.EV_KEY, key, 0)
+            self.ui.syn()
 
-    def tap(self, key: Key):
+    def tap(self, *keys: Key):
         """Presses and releases a key."""
-        self.press(key)
-        self.release(key)
+        self.press(keys)
+        self.release(keys)
 
     def type(self, txt: str):
-        """Types a string of characters. String must be ASCII. UTF-8 is not supported... yet."""
+        """Types a string of unicode characters. This works by using the Ctrl+Shift+U key combo
+        in Linux. Some distributions that use Qt may not have this key combo."""
+        for chr in txt:
+            self.press(Key.LCtrl, Key.LShift)
+            self.tap(Key.U)
+            self.release(Key.LCtrl, Key.LShift)
+            self.type_ascii(hex(ord(chr))[2:])
+            self.tap(Key.Enter)
+
+    def type_ascii(self, txt: str):
+        """Types a string of characters. String must be ASCII."""
         for chr in txt:
             if chr in shc:
                 self.press(Key.LShift)  # Press shift to change to Shifted Keys

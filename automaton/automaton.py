@@ -39,6 +39,10 @@ class Automaton:
 
     DEVICES = (evdev.InputDevice(keyboard), evdev.InputDevice(mouse))
     
+    # A list of callbacks to be called when a key is pressed or released.
+    # Index 0 is the list of press callbacks. Index 1 is the list of release callbacks.
+    CALLBACKS = [[], []]
+
     # Create a dummy device for event redirection. It has the capabilities of all connected devices.
     ui = evdev.UInput.from_device(*DEVICES, name = 'Automaton')
     
@@ -57,6 +61,15 @@ class Automaton:
             self.close()
         except:
             pass
+
+
+    def on_press(self, callback):
+        """Registers a callback that is called when any key is pressed. Not when its held."""
+        self.CALLBACKS[0].append(callback)
+
+    def on_release(self, callback):
+        """Registers a callback that is called when any key is released."""
+        self.CALLBACKS[1].append(callback)
 
 
     def close(self):
@@ -88,6 +101,16 @@ class Automaton:
                         release_ev = False # Whether this event was a release event or not.
 
                         if event.type == evdev.ecodes.EV_KEY:
+                            # Press and release callbacks
+                            press, release = self.CALLBACKS
+                            if event.value == 1:
+                                for cb in press:
+                                    cb(event)
+                            elif event.value == 0:
+                                for cb in release:
+                                    cb(event)
+                                
+
                             keys = tuple(self.ui.device.active_keys())
 
                             if keys == self.failsafe:
