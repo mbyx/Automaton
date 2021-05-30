@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
     name='automaton-linux',
     packages=["automaton"],
-    version='0.5',
+    version='0.6',
     license='MIT',
     description='An automation library for Linux using Uinput.',
     author='Abdul Muiz Iqbal',
