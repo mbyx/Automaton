@@ -11,7 +11,7 @@ app = Automaton(keyboard = '/dev/input/event6', mouse = '/dev/input/event6') # P
 # Automaton.active_device() # Returns the device path with the latest event
 
 # Hotstrings are registered by decorating a function.
-# The trigger string only allows ascii. The string returned (if any) is typed. Given that it is also ascii.
+# The trigger string only allows ascii. The string returned (if any) is typed. Unicode is supported for the typed string.
 @app.hotstring(":date")
 def get_date():
     return f'{datetime.date.today()}'
