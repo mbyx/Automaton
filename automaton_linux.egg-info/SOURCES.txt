@@ -1,0 +1,13 @@
+README.md
+setup.cfg
+setup.py
+automaton/__init__.py
+automaton/automaton.py
+automaton/consts.py
+automaton/input.py
+automaton/peripheral.py
+automaton_linux.egg-info/PKG-INFO
+automaton_linux.egg-info/SOURCES.txt
+automaton_linux.egg-info/dependency_links.txt
+automaton_linux.egg-info/requires.txt
+automaton_linux.egg-info/top_level.txt

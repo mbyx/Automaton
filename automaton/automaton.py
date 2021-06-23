@@ -1,5 +1,4 @@
-from automaton.actions.remap import RemapOptions
-from .actions import HotKey, HotString, Remap, ActionEmitter
+from .actions import HotKey, HotString, Remap, ActionEmitter, RemapOptions
 from .core import InputStream
 from typing import Callable, NoReturn, Optional, Union
 from .consts import HOTSTRING_TRIGGERS, KeyState, Input
