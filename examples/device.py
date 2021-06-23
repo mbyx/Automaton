@@ -1,4 +1,5 @@
-from automaton import Automaton, Key
+from automaton.automaton import Automaton
+from automaton.input import Key
 from automaton.consts import LockState
 
 # Remember to change to your device path.
