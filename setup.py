@@ -5,7 +5,7 @@ resp = requests.get("https://github.com/Abdul-Muiz-Iqbal/Automaton/releases/late
 
 VERSION = resp.url.split('/')[-1]
 
-with open("README", "r") as f:
+with open("README.md", "r") as f:
     desc = f.read()
 
 setuptools.setup(
