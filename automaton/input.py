@@ -1,6 +1,19 @@
-from evdev import ecodes as code
+import evdev.ecodes as code
+from enum import IntEnum
 
-class Key:
+class Button(IntEnum):
+    """
+    An alias for all the mouse buttons on a mouse in evdev.ecodes. Can be interchanged
+    with the evdev.ecodes keys.
+    """
+    LeftButton = code.BTN_MOUSE
+    RightButton = code.BTN_RIGHT
+    MiddleButton = code.BTN_MIDDLE
+    SideButton = code.BTN_SIDE
+    XButton = code.BTN_EXTRA
+
+
+class Key(IntEnum):
     """
     A simple alias for some of the most used keys in evdev.ecodes.
     These aliases are only here for convenience, as such for lesser used keys you
@@ -8,6 +21,31 @@ class Key:
     """
     Reserved = code.KEY_RESERVED
     Esc = code.KEY_ESC
+    F1 = code.KEY_F1
+    F2 = code.KEY_F2
+    F3 = code.KEY_F3
+    F4 = code.KEY_F4
+    F5 = code.KEY_F5
+    F6 = code.KEY_F6
+    F7 = code.KEY_F7
+    F8 = code.KEY_F8
+    F9 = code.KEY_F9
+    F10 = code.KEY_F10
+    F11 = code.KEY_F11
+    F12 = code.KEY_F12
+    F13 = code.KEY_F13
+    F14 = code.KEY_F14
+    F15 = code.KEY_F15
+    F16 = code.KEY_F16
+    F17 = code.KEY_F17
+    F18 = code.KEY_F18
+    F19 = code.KEY_F19
+    F20 = code.KEY_F20
+    F21 = code.KEY_F21
+    F22 = code.KEY_F22
+    F23 = code.KEY_F23
+    F24 = code.KEY_F24
+    Tilde = code.KEY_GRAVE
     Num1 = code.KEY_1
     Num2 = code.KEY_2
     Num3 = code.KEY_3
@@ -34,8 +72,8 @@ class Key:
     P = code.KEY_P
     LBracket = code.KEY_LEFTBRACE
     RBracket = code.KEY_RIGHTBRACE
-    Enter = code.KEY_ENTER
-    LCtrl = code.KEY_LEFTCTRL
+    BackSlash = code.KEY_BACKSLASH
+    CapsLock = code.KEY_CAPSLOCK
     A = code.KEY_A
     S = code.KEY_S
     D = code.KEY_D
@@ -47,9 +85,8 @@ class Key:
     L = code.KEY_L
     SemiColon = code.KEY_SEMICOLON
     Apostrophe = code.KEY_APOSTROPHE
-    Tilde = code.KEY_GRAVE
+    Enter = code.KEY_ENTER
     LShift = code.KEY_LEFTSHIFT
-    BackSlash = code.KEY_BACKSLASH
     Z = code.KEY_Z
     X = code.KEY_X
     C = code.KEY_C
@@ -61,20 +98,13 @@ class Key:
     Period = code.KEY_DOT
     ForwardSlash = code.KEY_SLASH
     RShift = code.KEY_RIGHTSHIFT
-    NumpadMult = code.KEY_KPASTERISK
+    LCtrl = code.KEY_LEFTCTRL
+    LMeta = code.KEY_LEFTMETA
     LAlt = code.KEY_LEFTALT
     Space = code.KEY_SPACE
-    CapsLock = code.KEY_CAPSLOCK
-    F1 = code.KEY_F1
-    F2 = code.KEY_F2
-    F3 = code.KEY_F3
-    F4 = code.KEY_F4
-    F5 = code.KEY_F5
-    F6 = code.KEY_F6
-    F7 = code.KEY_F7
-    F8 = code.KEY_F8
-    F9 = code.KEY_F9
-    F10 = code.KEY_F10
+    RMeta = code.KEY_RIGHTMETA
+    RAlt = code.KEY_RIGHTALT
+    NumpadMult = code.KEY_KPASTERISK
     NumLock = code.KEY_NUMLOCK
     ScrollLock = code.KEY_SCROLLLOCK
     Numpad7 = code.KEY_KP7
@@ -90,13 +120,10 @@ class Key:
     Numpad3 = code.KEY_KP3
     Numpad0 = code.KEY_KP0
     NumpadPeriod = code.KEY_KPDOT
-    F11 = code.KEY_F11
-    F12 = code.KEY_F12
     NumpadEnter = code.KEY_KPENTER
     RCtrl = code.KEY_RIGHTCTRL
     NumpadDivide = code.KEY_KPSLASH
     PrintScreen = code.KEY_SYSRQ
-    RAlt = code.KEY_RIGHTALT
     LineFeed = code.KEY_LINEFEED
     Home = code.KEY_HOME
     Up = code.KEY_UP
@@ -118,9 +145,6 @@ class Key:
     Pause = code.KEY_PAUSE
     Scale = code.KEY_SCALE
     NumpadComma = code.KEY_KPCOMMA
-    LMeta = code.KEY_LEFTMETA
-    RMeta = code.KEY_RIGHTMETA
-    Compose = code.KEY_COMPOSE
     Stop = code.KEY_STOP
     Again = code.KEY_AGAIN
     Front = code.KEY_FRONT
@@ -147,29 +171,12 @@ class Key:
     ScrollDown = code.KEY_SCROLLDOWN
     NumpadLParen = code.KEY_KPLEFTPAREN
     NumpadRParen = code.KEY_KPRIGHTPAREN
-    F13 = code.KEY_F13
-    F14 = code.KEY_F14
-    F15 = code.KEY_F15
-    F16 = code.KEY_F16
-    F17 = code.KEY_F17
-    F18 = code.KEY_F18
-    F19 = code.KEY_F19
-    F20 = code.KEY_F20
-    F21 = code.KEY_F21
-    F22 = code.KEY_F22
-    F23 = code.KEY_F23
-    F24 = code.KEY_F24
     App3 = code.KEY_PROG3
     App4 = code.KEY_PROG4
     BrightnessDown = code.KEY_BRIGHTNESSDOWN
     BrightnessUp = code.KEY_BRIGHTNESSUP
     Media = code.KEY_MEDIA
     Unknown = code.KEY_UNKNOWN
-    LeftButton = code.BTN_MOUSE
-    RightButton = code.BTN_RIGHT
-    MiddleButton = code.BTN_MIDDLE
-    SideButton = code.BTN_SIDE
-    XButton = code.BTN_EXTRA
     Zoom = code.KEY_ZOOM
     Paste = code.KEY_PASTE
     Copy = code.KEY_COPY
