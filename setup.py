@@ -1,20 +1,27 @@
-from distutils.core import setup
-setup(
+import setuptools
+import requests
+
+resp = requests.get("https://github.com/Abdul-Muiz-Iqbal/Automaton/releases/latest")
+
+VERSION = resp.url.split('/')[-1]
+
+with open("README", "r") as f:
+    desc = f.read()
+
+setuptools.setup(
     name='automaton-linux',
     packages=["automaton"],
-    version='0.6',
+    version=VERSION,
     license='MIT',
     description='An automation library for Linux using Uinput.',
+    long_description =  desc,
+    long_description_content_type = 'text/markdown',
     author='Abdul Muiz Iqbal',
     author_email='parkermuiz0@gmail.com',
     url='https://github.com/Abdul-Muiz-Iqbal/Automaton/',
-    download_url='https://github.com/Abdul-Muiz-Iqbal/Automaton/archive/refs/tags/v0.6.tar.gz',
+    download_url=f'https://github.com/Abdul-Muiz-Iqbal/Automaton/archive/refs/tags/{VERSION}.tar.gz',
     keywords=['automation', 'linux', 'uinput'],
-    install_requires=[
-        'evdev',
-        'pgi',
-        'zenipy'
-    ],
+    install_requires=['evdev'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
