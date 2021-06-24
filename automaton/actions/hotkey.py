@@ -1,9 +1,8 @@
 from automaton.actions.action import Action
 from automaton.core.context import Context
 from typing import Callable, Optional
-from ..peripheral import Peripheral
+from ..core import Peripheral, EmissionState, Input
 from dataclasses import dataclass, field
-from ..consts import EmissionState, Input
 from enum import Enum
 
 class HotKeyOptions(Enum):

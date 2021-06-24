@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
-from automaton.consts import EmissionState
-from automaton.core.context import Context
-from ..peripheral import Peripheral
+from ..core import Peripheral, EmissionState, Context
 
 class Action(ABC):
     """Represents an action that can be emitted, and can determine when to emit."""

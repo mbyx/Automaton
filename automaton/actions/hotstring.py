@@ -1,10 +1,8 @@
 from automaton.core.context import Context
 from typing import Callable, Optional
-from ..peripheral import Peripheral
+from ..core import Peripheral, Key, EmissionState, HOTSTRING_TRIGGERS, Input
 from dataclasses import dataclass
-from ..consts import EmissionState, HOTSTRING_TRIGGERS, Input
-from enum import Enum
-from ..input import Key
+from enum import Enum 
 
 class HotStringOptions(Enum):
     """Configurable options for a hotstring."""
