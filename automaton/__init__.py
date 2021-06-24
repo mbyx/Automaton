@@ -1,2 +1,2 @@
-from .core import *
-from .actions import *
+from automaton.core import *
+from automaton.actions import *
