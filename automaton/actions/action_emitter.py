@@ -1,6 +1,4 @@
-from automaton.peripheral import Peripheral
-from automaton.consts import EmissionState
-from ..core import Context
+from ..core import Context, Peripheral, EmissionState
 from ..actions import HotKey, HotString, Remap, Redirect, Action
 from dataclasses import dataclass
 import evdev

@@ -1,6 +1,5 @@
-from ..peripheral import Peripheral
-from dataclasses import dataclass
-from ..core import Context
+from ..core import Peripheral, Context
+from dataclasses import dataclass 
 import evdev
 
 @dataclass

@@ -1,6 +1,5 @@
-from ..consts import EmissionState, Input, KeyState, Callable
-from automaton.core.context import Context
-from ..peripheral import Peripheral
+from ..core import EmissionState, Input, KeyState, Callable, Peripheral
+from automaton.core.context import Context 
 from dataclasses import dataclass
 from enum import Enum
 

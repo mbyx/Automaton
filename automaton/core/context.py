@@ -1,6 +1,6 @@
-from ..consts import Input, CHAR_CODES, SCANCODES, SHIFT_CODES
+from .consts import CHAR_CODES, SCANCODES, SHIFT_CODES
 from dataclasses import dataclass
-from ..input import Key
+from .input import Key
 import evdev
 
 @dataclass
