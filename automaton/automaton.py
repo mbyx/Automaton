@@ -1,10 +1,10 @@
-from .actions import HotKey, HotString, Remap, ActionEmitter, RemapOptions
-from .core import InputStream
+from actions import HotKey, HotString, Remap, ActionEmitter, RemapOptions
+from core import InputStream
 from typing import Callable, NoReturn, Optional, Union
-from .consts import HOTSTRING_TRIGGERS, KeyState, Input
-from .peripheral import Peripheral
+from consts import HOTSTRING_TRIGGERS, KeyState, Input
+from peripheral import Peripheral
 from dataclasses import dataclass
-from .input import Key
+from input import Key
 import evdev
 
 
