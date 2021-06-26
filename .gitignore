@@ -1,2 +1,3 @@
 __pycache__/
 dist/
+automaton_linux.egg-info/
