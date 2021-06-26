@@ -10,7 +10,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name='automaton-linux',
-    packages=["automaton"],
+    packages=setuptools.find_packages(),
     version=VERSION,
     license='MIT',
     description='An automation library for Linux using Uinput.',
