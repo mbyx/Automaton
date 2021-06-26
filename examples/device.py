@@ -1,6 +1,4 @@
-from automaton.automaton import Automaton
-from automaton.input import Key
-from automaton.consts import LockState
+from automaton.core import Automaton, Key, LockState
 
 # Remember to change to your device path.
 app = Automaton.new(devices = ['/dev/input/event6', '/dev/input/event5'])

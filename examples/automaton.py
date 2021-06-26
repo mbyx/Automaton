@@ -1,5 +1,4 @@
-from automaton.automaton import Automaton
-from automaton.input import Key, Button
+from automaton.core import Automaton, Key, Button
 import datetime
 
 # Create an instance of Automaton.
