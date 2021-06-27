@@ -1,5 +1,5 @@
 from automaton.core.context import Context
-from typing import Callable, Optional
+from typing import Callable, Optional, List
 from ..core import Peripheral, Key, EmissionState, HOTSTRING_TRIGGERS, Input
 from dataclasses import dataclass
 from enum import Enum 
@@ -18,8 +18,8 @@ class HotString:
     txt: str
     action: Callable[[], Optional[str]]
     context: Callable[[], bool]
-    triggers: list[Input]
-    options: list[HotStringOptions]
+    triggers: List[Input]
+    options: List[HotStringOptions]
 
     def emit(self, device: Peripheral, context: Context):
         if (txt := self.action()) is not None:

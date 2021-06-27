@@ -1,6 +1,6 @@
 from ..actions import HotKey, HotString, Remap, ActionEmitter, RemapOptions
 from .inputstream import InputStream
-from typing import Callable, NoReturn, Optional, Union
+from typing import Callable, NoReturn, Optional, Union, List
 from .consts import HOTSTRING_TRIGGERS, KeyState, Input
 from .peripheral import Peripheral
 from dataclasses import dataclass
@@ -18,16 +18,16 @@ class Automaton:
     emitter: ActionEmitter
     stream: InputStream
     device: Peripheral
-    failsafe: list[Input]
+    failsafe: List[Input]
 
     def new(
-        devices: Optional[list[str]] = None,
-        failsafe: Optional[list[Input]] = [Key.LCtrl, Key.Esc]
+        devices: Optional[List[str]] = None,
+        failsafe: Optional[List[Input]] = [Key.LCtrl, Key.Esc]
     ) -> 'Automaton':
-        """Creates a new instance of Automaton. Takes in a list of devices to act as slaves,
-        and a list of keys to be pressed. These act as a special hotkey that can close Automaton."""
+        """Creates a new instance of Automaton. Takes in a List of devices to act as slaves,
+        and a List of keys to be pressed. These act as a special hotkey that can close Automaton."""
         if devices is None:
-            devices = evdev.list_devices()
+            devices = evdev.List_devices()
         ui = evdev.UInput.from_device(*devices, name='Automaton')
         
         return Automaton(
@@ -56,19 +56,19 @@ class Automaton:
             self.close()
 
     def on(
-        self, trigger: Union[list[Input], str],
+        self, trigger: Union[List[Input], str],
         context: Callable[[], bool] = lambda: True,
-        options: list[RemapOptions] = [],
-        triggers: list[Input] = HOTSTRING_TRIGGERS
+        options: List[RemapOptions] = [],
+        triggers: List[Input] = HOTSTRING_TRIGGERS
     ):
-        """Takes in either a list of keys, or a string. If a string is given, a hotstring is
+        """Takes in either a List of keys, or a string. If a string is given, a hotstring is
         registered, otherwise a hotkey is registered. Options and context-sensitivity can be
         applied."""
         def wrapper(action):
             if isinstance(trigger, str):
                 hotstring = HotString(trigger, action, context, triggers, options)
                 self.emitter.HOTSTRINGS.append(hotstring)
-            elif isinstance(trigger, list):
+            elif isinstance(trigger, List):
                 hotkey = HotKey(trigger, action, lambda: True, [], [])
                 self.emitter.HOTKEYS.append(hotkey)
             return action
@@ -77,7 +77,7 @@ class Automaton:
     def remap(
         self, src: Input, dest: Input,
         context: Callable[[], bool] = lambda: True,
-        options: list[RemapOptions] = []
+        options: List[RemapOptions] = []
     ):
         """Remaps the src to the dest. Other options and context-sensitivity can be applied."""
         remap = Remap(src, dest, context, options, KeyState.Press)
