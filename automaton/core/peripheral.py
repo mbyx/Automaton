@@ -1,8 +1,8 @@
 from .consts import LockState, SCANCODES, SHIFT_CODES, Input
-from typing import Callable, Optional
+from typing import Callable, Optional, List
 from dataclasses import dataclass, field
 from .input import Key
-import evdev
+import evdev, os
 
 # The inverse of SCANCODES and SHIFT_CODES
 sc = {v: k for k, v in SCANCODES.items()}
@@ -16,8 +16,8 @@ class Peripheral:
     will only work after Automaton.run() is called. This means they can only be used
     inside of action callbacks, unless you choose to use a separate thread."""
     ui: evdev.UInput
-    PRESS_CALLBACKS: list[Subscriber] = field(default_factory = list)
-    RELEASE_CALLBACKS: list[Subscriber] = field(default_factory=list)
+    PRESS_CALLBACKS: List[Subscriber] = field(default_factory = list)
+    RELEASE_CALLBACKS: List[Subscriber] = field(default_factory = list)
 
     def on_press(self, callback: Subscriber):
         """Registers a callback which is called when a key is pressed."""
@@ -26,6 +26,11 @@ class Peripheral:
     def on_release(self, callback: Subscriber):
         """Registers a callback which is called when a key is released."""
         self.RELEASE_CALLBACKS.append(callback)
+
+    def enable_scroll_lock(self):
+        """Hack that allows the usage of ScrollLock. Must always be called if you
+        want to use ScrollLock. Note: This requires xmodmap to be installed."""
+        os.system("xmodmap -e 'add mod3 = Scroll_Lock'")
 
     def update(self, event: evdev.InputEvent):
         """Using the given event, it determines which callback to call."""

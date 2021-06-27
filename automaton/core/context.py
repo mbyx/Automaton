@@ -1,5 +1,6 @@
 from .consts import CHAR_CODES, SCANCODES, SHIFT_CODES
 from dataclasses import dataclass
+from typing import List
 from .input import Key
 import evdev
 
@@ -7,8 +8,8 @@ import evdev
 class Context:
     """Container that stores the essential state of a device, and actions."""
     word: str
-    active_keys: list[int]
-    lock_states: list[int]
+    active_keys: List[int]
+    lock_states: List[int]
     event: evdev.InputEvent
 
     def new() -> 'Context':

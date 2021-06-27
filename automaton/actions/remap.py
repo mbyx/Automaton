@@ -2,6 +2,7 @@ from ..core import EmissionState, Input, KeyState, Callable, Peripheral
 from automaton.core.context import Context 
 from dataclasses import dataclass
 from enum import Enum
+from typing import List
 
 class RemapOptions(Enum):
     """Configurable options of a remap."""
@@ -15,7 +16,7 @@ class Remap:
     src: Input
     dest: Input
     context: Callable[[], bool]
-    options: list[RemapOptions]
+    options: List[RemapOptions]
     state: KeyState
 
     def emit(self, device: Peripheral, context: Context):

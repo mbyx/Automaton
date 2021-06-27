@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 import evdev, select, contextlib
 from .device import Device
+from typing import List
 
 @dataclass
 class InputStream:
     """A Stream that reads events from a set of devices and yields them as a generator."""
-    DEVICES: list[str]
+    DEVICES: List[str]
 
     def read(self) -> evdev.InputEvent:
         """A Generator that returns an InputEvent from stored devices. Also manages the
@@ -27,7 +28,7 @@ class InputStream:
                     for event in devices[fd].read():
                         yield event
 
-    def grab_devices(self, devices: list[Device], stack: contextlib.ExitStack):
+    def grab_devices(self, devices: List[Device], stack: contextlib.ExitStack):
         """Grabs all devices; prevents keypresses from being registered."""
         # Do not grab until all keys are released. Prevents weirdness.
         while any([key

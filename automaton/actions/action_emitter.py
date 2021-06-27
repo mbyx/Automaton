@@ -1,15 +1,16 @@
 from ..core import Context, Peripheral, EmissionState
 from ..actions import HotKey, HotString, Remap, Redirect, Action
 from dataclasses import dataclass
+from typing import List
 import evdev
 
 @dataclass
 class ActionEmitter:
     """Container class that stores all the hotkeys, hotstrings, and remaps. It also determines,
     given an event, which action to emit. It also updates its builtin state (context)"""
-    HOTKEYS: list[HotKey]
-    HOTSTRINGS: list[HotString]
-    REMAPS: list[Remap]
+    HOTKEYS: List[HotKey]
+    HOTSTRINGS: List[HotString]
+    REMAPS: List[Remap]
     context: Context
 
     def new() -> 'ActionEmitter':
