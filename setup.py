@@ -23,10 +23,9 @@ setuptools.setup(
     keywords=['automation', 'linux', 'uinput'],
     install_requires=['evdev'],
     classifiers=[
-        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
+        'Topic :: Software Development :: Automation',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.8',
     ],
 )

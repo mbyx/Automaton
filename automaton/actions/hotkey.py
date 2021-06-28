@@ -7,8 +7,7 @@ from enum import Enum
 
 class HotKeyOptions(Enum):
     """Configurable options of a hotkey."""
-    FireOnRelease = False
-    DontSuppressKeys = False
+    DontSuppressKeys = 0
 
 
 @dataclass
@@ -25,6 +24,11 @@ class HotKey(Action):
             device.type(txt)
 
     def should_emit(self, context: Context) -> EmissionState:
-        if list(map(lambda key: key.value, self.keys)) == context.active_keys:
-            return EmissionState.Emit
+        if self.context() is False:
+            return EmissionState.DontEmit
+        elif list(map(lambda key: key.value, self.keys)) == context.active_keys:
+            if HotKeyOptions.DontSuppressKeys in self.options:
+                return EmissionState.EmitButDontSuppress
+            else:
+                return EmissionState.Emit
         return EmissionState.DontEmit

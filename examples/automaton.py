@@ -11,6 +11,7 @@ import datetime
 # import evdev
 # for device in map(evdev.InputDevice, evdev.list_devices()):
 #     print(device.name, '::', device.path)
+# Replace with your own device paths. These correspond to my keyboard and mouse.
 app = Automaton.new(devices = ['/dev/input/event6', '/dev/input/event5']) # Pass in the path to the keyboard and mouse.
 
 # Hotstrings are registered by decorating a function.
@@ -24,6 +25,21 @@ def get_date():
 @app.on([Key.LShift, Key.A])
 def shift_a():
     print("Who pressed me?")
+
+# There are different modifiers for each action. You can get these from automaton.actions:
+from automaton.actions import HotStringOptions, HotKeyOptions, RemapOptions
+# HotStringOptions.CaseSensitive
+# HotStringOptions.TriggerInsideWord Allows hotstring to be triggered even if the trigger text is inside the currently typed word
+# Eg:
+@app.on("btw", options = [HotStringOptions.TriggerInsideWord])
+def btw(): # Typing shlbtw will expand to shl by the way
+    return "by the way"
+
+# HotStringOptions.TriggerImmediately When applied, does not require a trigger key to activate
+# HotStringOptions.PreventAutoBackspace When a hotstring is triggered and is a text replacement, do not auto backspace.
+
+# RemapOptions.DontSuppressKeys When applied, both the src and dest keys are pressed/released
+# HotKeyOptions.DontSuppressKeys When applied, the hotkey such as LShift+A will not suppress 'A'
 
 # Remaps are registered by calling remap and passing in src and dest keys.
 # The src key is suppressed and replaced by the dest key. Here, Numpad4 is remapped to the left button of the mouse.

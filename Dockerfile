@@ -1,6 +1,6 @@
 FROM ubuntu:21.04
 
-WORKDIR /Automaton
+WORKDIR /automaton
 
 COPY requirements.txt requirements.txt
 
@@ -14,6 +14,6 @@ RUN apt-get -y install python3-pip
 
 RUN pip3 install -r requirements.txt
 
-COPY Automaton .
+COPY automaton .
 
-CMD [ "sudo", "python3.9", "automaton/automaton.py"]
+CMD [ "sudo", "python3.9", "automaton/__init__.py"]

@@ -2,7 +2,7 @@ from .consts import LockState, SCANCODES, SHIFT_CODES, Input
 from typing import Callable, Optional, List
 from dataclasses import dataclass, field
 from .input import Key
-import evdev, os
+import evdev
 
 # The inverse of SCANCODES and SHIFT_CODES
 sc = {v: k for k, v in SCANCODES.items()}
@@ -26,11 +26,6 @@ class Peripheral:
     def on_release(self, callback: Subscriber):
         """Registers a callback which is called when a key is released."""
         self.RELEASE_CALLBACKS.append(callback)
-
-    def enable_scroll_lock(self):
-        """Hack that allows the usage of ScrollLock. Must always be called if you
-        want to use ScrollLock. Note: This requires xmodmap to be installed."""
-        os.system("xmodmap -e 'add mod3 = Scroll_Lock'")
 
     def update(self, event: evdev.InputEvent):
         """Using the given event, it determines which callback to call."""
@@ -101,7 +96,7 @@ class Peripheral:
             state = 1 in leds
         elif key == Key.ScrollLock:
             state = 2 in leds
-        return LockState.On if state is True else LockState.Off
+        return state
 
     def _is_lock_key(self, key: Input) -> bool:
         """Determines whether a key is CapsLock, NumLock or ScrollLock."""

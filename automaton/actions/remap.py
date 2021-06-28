@@ -1,17 +1,16 @@
-from ..core import EmissionState, Input, KeyState, Callable, Peripheral
-from automaton.core.context import Context 
+from ..core import EmissionState, Input, KeyState, Callable, Peripheral, Context
+from .action import Action 
 from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
 class RemapOptions(Enum):
     """Configurable options of a remap."""
-    FireOnRelease = False
-    SuppressKeys = False
+    DontSuppressKeys = 0
 
 
 @dataclass
-class Remap:
+class Remap(Action):
     """Represents the state and logic a single remap requires to function and be stored."""
     src: Input
     dest: Input
@@ -26,11 +25,17 @@ class Remap:
             device.release(self.dest)
 
     def should_emit(self, context: Context) -> EmissionState:
+        if self.context() is False:
+            return EmissionState.DontEmit
+
         # Check if the event can be remapped.
-        if self.src.value == context.event.code:  # If a remap was found
+        elif self.src.value == context.event.code:  # If a remap was found
             if context.event.value >= 1:
                 self.state = KeyState.Press
             else:
                 self.state = KeyState.Release
-            return EmissionState.Emit
+            if RemapOptions.DontSuppressKeys in self.options:
+                return EmissionState.EmitButDontSuppress
+            else:
+                return EmissionState.Emit
         return EmissionState.DontEmit
