@@ -5,7 +5,7 @@ from .consts import HOTSTRING_TRIGGERS, KeyState, Input
 from .peripheral import Peripheral
 from dataclasses import dataclass
 from .input import Key
-import evdev
+import evdev, os
 
 
 @dataclass
@@ -82,3 +82,8 @@ class Automaton:
         """Remaps the src to the dest. Other options and context-sensitivity can be applied."""
         remap = Remap(src, dest, context, options, KeyState.Press)
         self.emitter.REMAPS.append(remap)
+
+    def enable_scroll_lock(self):
+        """Hack that allows the usage of ScrollLock. Must always be called if you
+        want to use ScrollLock. Note: This requires xmodmap to be installed."""
+        os.system("xmodmap -e 'add mod3 = Scroll_Lock'")

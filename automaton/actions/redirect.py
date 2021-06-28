@@ -1,9 +1,10 @@
+from .action import Action
 from ..core import Peripheral, Context
 from dataclasses import dataclass 
 import evdev
 
 @dataclass
-class Redirect:
+class Redirect(Action):
     """The default action that is emitted. It simply redirects the event from one device to another."""
     event: evdev.InputEvent
 

@@ -26,10 +26,10 @@ class Context:
     def update_lock_states(self, event: evdev.InputEvent):
         """Updates the information about the lock states using the event."""
         if event.type == evdev.ecodes.EV_KEY:
-            if event.value == 1 and event.code not in self.lock_states:
+            if event.value >= 1 and event.code not in self.lock_states:
                 self.lock_states.append(event.code)
-            elif event.value == 0 and event.code not in self.lock_states:
-                self.lock_states.append(event.code)
+            elif event.value >= 1 and event.code in self.lock_states:
+                self.lock_states.remove(event.code)
 
     def update_active_keys(self, event: evdev.InputEvent):
         """Updates the information about the active keys using the event."""
@@ -46,7 +46,7 @@ class Context:
             conditions = [
                 Key.LShift.value in self.active_keys,
                 Key.RShift.value in self.active_keys,
-                (58 in self.lock_states) and (event.code in CHAR_CODES)
+                (Key.CapsLock.value in self.lock_states) and (event.code in CHAR_CODES)
             ]
             if any(conditions):
                 self.word += SHIFT_CODES.get(event.code) or ''
