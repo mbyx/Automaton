@@ -1,4 +1,7 @@
-# Automaton - A Linux Automation Library
+## Automaton - A Linux Automation Library
+
+Automaton is a library based on uinput designed to be a substitute for autohotkey in linux.
+It has support for HotKeys, HotStrings, and Remaps with configurable options, context sensitivity, and device manipulation.
 
 ### Note
 Automaton supports only Linux.
@@ -7,10 +10,6 @@ Automaton uses uinput in order to work. Therefore, install Automaton and run its
 sudo pip3.9 install automaton-linux
 sudo python3.9 main.py # main.py contains the Automaton app
 ```
-
-### What is it
-Automaton is a library based on uinput designed to be a substitute for autohotkey in linux.
-It has support for HotKeys, HotStrings, and Remaps with configurable options, context sensitivity, and device manipulation.
 
 ### Usage
 A simple Automaton script looks like:
