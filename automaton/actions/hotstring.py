@@ -22,14 +22,14 @@ class HotString(Action):
     options: List[HotStringOptions]
 
     def emit(self, device: Peripheral, context: Context):
+        context.word = ''
         if (txt := self.action()) is not None:
             if HotStringOptions.PreventAutoBackspace not in self.options:
-                for _ in range(len(context.word)):
+                for _ in range(len(self.txt)):
                     device.tap(Key.Backspace)
             device.type(txt)
 
     def should_emit(self, context: Context) -> EmissionState:
-        print(context.word)
         if self.context() is False:
             return EmissionState.DontEmit
         # Check if the event triggers a hotstring.
@@ -43,15 +43,11 @@ class HotString(Action):
             comparision_method = lambda x, y: x in y
         else:
             comparision_method = lambda x, y: x == y
-        
-        if HotStringOptions.CaseSensitive in self.options:
-            word, txt = context.word, self.txt
-        else:
-            word, txt = context.word.lower(), self.txt.lower()
 
+        if HotStringOptions.CaseSensitive in self.options:
+            word, txt = context.word.strip(), self.txt.strip()
+        else:
+            word, txt = context.word.lower().strip(), self.txt.lower().strip()
         condition = is_trigger_pressed and comparision_method(word, txt)
 
-        if condition or context.event.code in map(lambda key: key.value, HOTSTRING_TRIGGERS):
-            context.word = ''
-        
         return EmissionState.Emit if condition else EmissionState.DontEmit

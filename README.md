@@ -15,7 +15,7 @@ It has support for HotKeys, HotStrings, and Remaps with configurable options, co
 ### Usage
 A simple Automaton script looks like:
 ```python3
-from automaton import Automaton
+from automaton.core import Automaton
 
 app = Automaton.new()
 

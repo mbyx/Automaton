@@ -1,4 +1,4 @@
-from ..core import Context, Peripheral, EmissionState
+from ..core import Context, Peripheral, EmissionState, HOTSTRING_TRIGGERS
 from ..actions import HotKey, HotString, Remap, Redirect, Action
 from dataclasses import dataclass
 from typing import List
@@ -29,5 +29,6 @@ class ActionEmitter:
                 elif should_emit is EmissionState.EmitButDontSuppress:
                     action.emit(device, self.context)
                     break
-
+            if self.context.event.code in list(map(lambda key: int(key), HOTSTRING_TRIGGERS)):
+                self.context.word = ''
         return Redirect(event)

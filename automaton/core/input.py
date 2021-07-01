@@ -19,6 +19,7 @@ class Key(IntEnum):
     These aliases are only here for convenience, as such for lesser used keys you
     can directly use evdev.ecodes.
     """
+    Compose = code.KEY_COMPOSE
     Reserved = code.KEY_RESERVED
     Esc = code.KEY_ESC
     F1 = code.KEY_F1
