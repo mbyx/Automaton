@@ -1,9 +1,11 @@
+from automaton.actions.hotkey import HotKeyOptions
 from ..actions import HotKey, HotString, Remap, ActionEmitter, RemapOptions
 from .inputstream import InputStream
-from typing import Callable, NoReturn, Optional, Union, List
+from typing import Callable, Iterator, Optional, Tuple, Union, List
 from .consts import HOTSTRING_TRIGGERS, KeyState, Input
 from .peripheral import Peripheral
 from dataclasses import dataclass
+from .macro import Macro
 from .input import Key
 import evdev, os
 
@@ -20,19 +22,20 @@ class Automaton:
     device: Peripheral
     failsafe: List[Input]
 
+    @staticmethod
     def new(
         devices: Optional[List[str]] = None,
-        failsafe: Optional[List[Input]] = [Key.LCtrl, Key.Esc]
+        failsafe: List[Input] = [Key.LCtrl, Key.Esc]
     ) -> 'Automaton':
         """Creates a new instance of Automaton. Takes in a List of devices to act as slaves,
         and a List of keys to be pressed. These act as a special hotkey that can close Automaton."""
         if devices is None:
-            devices = evdev.List_devices()
+            devices = evdev.list_devices()
         ui = evdev.UInput.from_device(*devices, name='Automaton')
         
         return Automaton(
             ActionEmitter.new(),
-            InputStream(devices),
+            InputStream.new(devices),
             Peripheral(ui),
             failsafe
         )
@@ -40,14 +43,22 @@ class Automaton:
     def close(self):
         """Closes the dummy device"""
         self.device.ui.close()
+        self.stream.stack.close()
 
-    def run(self) -> NoReturn:
+    def _get_event(self) -> Iterator[Tuple[evdev.InputEvent, str, int]]:
+        """Wrapper around InputStream.read(). Necessary as read cannot be called more than
+        once, yet is required in two separate areas."""
+        for event, device_path, seconds in self.stream.read():
+            yield event, device_path, seconds
+
+    def run(self) -> None:
         """Starts the automaton main loop. This has to be called in order for automaton to function.
         It functions by redirection and suppression of events from slave devices into the master device.
         The middleman performs all the logic."""
         try:
-            for event in self.stream.read():
-                action = self.emitter.handle(event, self.device)
+            self.stream.grab_devices()
+            for event, device_path, _ in self._get_event():
+                action = self.emitter.handle(event, device_path, self.device)
                 self.device.update(event)
                 if list(map(int, self.failsafe)) in [self.emitter.context.active_keys]:
                     raise KeyboardInterrupt
@@ -55,21 +66,32 @@ class Automaton:
         finally:
             self.close()
 
+    def record_until(self, condition: Callable[..., bool]) -> Macro:
+        """Records a series of events into a Macro until a specific condition becomes
+        false."""
+        events: List[evdev.InputEvent] = []
+        for event, _, seconds in self._get_event():
+            if condition():
+                break
+            events.append((event, seconds))
+        return Macro(events, self.emitter, self.device)
+
     def on(
         self, trigger: Union[List[Input], str],
         context: Callable[[], bool] = lambda: True,
-        options: List[RemapOptions] = [],
-        triggers: List[Input] = HOTSTRING_TRIGGERS
+        options: List[Union[HotKeyOptions, HotKeyOptions]] = [],
+        triggers: List[Input] = HOTSTRING_TRIGGERS,
+        from_device: Optional[str] = None
     ):
         """Takes in either a List of keys, or a string. If a string is given, a hotstring is
         registered, otherwise a hotkey is registered. Options and context-sensitivity can be
         applied."""
         def wrapper(action):
             if isinstance(trigger, str):
-                hotstring = HotString(trigger, action, context, triggers, options)
+                hotstring = HotString(trigger, action, context, triggers, options, from_device)
                 self.emitter.HOTSTRINGS.append(hotstring)
             elif isinstance(trigger, List):
-                hotkey = HotKey(trigger, action, lambda: True, [], [])
+                hotkey = HotKey(trigger, action, context, options, from_device)
                 self.emitter.HOTKEYS.append(hotkey)
             return action
         return wrapper
@@ -77,10 +99,11 @@ class Automaton:
     def remap(
         self, src: Input, dest: Input,
         context: Callable[[], bool] = lambda: True,
-        options: List[RemapOptions] = []
+        options: List[RemapOptions] = [],
+        from_device: Optional[str] = None
     ):
         """Remaps the src to the dest. Other options and context-sensitivity can be applied."""
-        remap = Remap(src, dest, context, options, KeyState.Press)
+        remap = Remap(src, dest, context, options, KeyState.Press, from_device)
         self.emitter.REMAPS.append(remap)
 
     def enable_scroll_lock(self):

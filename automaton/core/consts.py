@@ -1,9 +1,9 @@
-from typing import Callable, Optional, Union, List, Dict, Set
+from typing import Callable, Optional, Union, List, Dict
 from .input import Key, Button
 from enum import Enum
 
 Callback = Callable[[], Optional[str]]
-Input = Union[Key, Button]
+Input = Union[Key, Button, int]
 
 # Maps scancodes to their lowercase variants
 SCANCODES: Dict[int, str] = {
@@ -28,9 +28,9 @@ CHAR_CODES: List[int] = [
 ]
 
 # The default keys that have to be pressed in order for a hotstring to activate. Can be changed.
-HOTSTRING_TRIGGERS: Set[Key] = {
+HOTSTRING_TRIGGERS: List[Key] = [
     Key.Space, Key.Backspace, Key.Enter, Key.Tab
-}
+]
 
 
 class LockState(Enum):

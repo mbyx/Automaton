@@ -11,17 +11,20 @@ class Context:
     active_keys: List[int]
     lock_states: List[int]
     event: evdev.InputEvent
+    device_path: str
 
+    @staticmethod
     def new() -> 'Context':
         """Create an empty context object."""
-        return Context('', [], [], evdev.InputEvent(0, 0, 0, 0, 0))
+        return Context('', [], [], evdev.InputEvent(0, 0, 0, 0, 0), '')
 
-    def update(self, event: evdev.InputEvent):
+    def update(self, event: evdev.InputEvent, device_path: str):
         """Updates the context with new information gathered from the event."""
         self.update_active_keys(event)
         self.update_lock_states(event)
         self.append_key(event)
         self.event = event
+        self.device_path = device_path
 
     def update_lock_states(self, event: evdev.InputEvent):
         """Updates the information about the lock states using the event."""
