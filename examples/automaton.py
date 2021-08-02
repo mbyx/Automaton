@@ -52,10 +52,10 @@ app.remap(Key.Numpad4, Button.LeftButton)
 app.remap(Key.K, Key.A, context = lambda: 1 == 2)
 
 # You can also emit callbacks when any key is pressed or released:
-app.on_press(lambda event: print(event.code))
-app.on_release(lambda event: print(event.code))
+app.device.on_press(lambda event: print(event.code))
+app.device.on_release(lambda event: print(event.code))
 
 # Multiple callbacks are allowed.
-app.on_press(lambda event: print(event.value))
+app.device.on_press(lambda event: print(event.value))
 
 app.run() # Start listening and redirecting events. Hotkeys and such won't work without this.

@@ -1,8 +1,8 @@
 from .consts import LockState, SCANCODES, SHIFT_CODES, Input
 from typing import Callable, Optional, List
 from dataclasses import dataclass, field
-from .input import Key
-import evdev
+from .input import Key, Button
+import evdev, pyperclip
 
 # The inverse of SCANCODES and SHIFT_CODES
 sc = {v: k for k, v in SCANCODES.items()}
@@ -52,6 +52,16 @@ class Peripheral:
         self.release(*keys)
 
     def type(self, txt: str):
+        old = pyperclip.paste()
+        pyperclip.copy(txt)
+        def paste():
+            self.press(Key.LCtrl, Key.LShift)
+            self.tap(Key.V)
+            self.release(Key.LCtrl, Key.LShift)
+        paste()
+        pyperclip.copy(old)
+
+    def type_unicode(self, txt: str):
         """Types a string of unicode characters. This works by using the Ctrl+Shift+U key combo
         in Linux. Some distributions that use Qt may not have this key combo."""
         for chr in txt:
@@ -76,7 +86,7 @@ class Peripheral:
 
     def is_pressed(self, key: Input) -> bool:
         """Determines if the key is pressed. NOTE: This only works after redirection has started."""
-        return key.value in self.ui.device.active_keys()
+        return int(key) in self.ui.device.active_keys()
 
     def set_state(self, key: Input, state: LockState):
         """Sets the state of a lock key to ON or OFF, True or False"""
@@ -107,6 +117,13 @@ class Peripheral:
         self.ui.write(evdev.ecodes.EV_REL, evdev.ecodes.REL_X, x)
         self.ui.write(evdev.ecodes.EV_REL, evdev.ecodes.REL_Y, y)
         self.ui.syn()
+
+    def drag_rel(self, x: int, y: int, button: Button = Button.LeftButton):
+        """Drags the mouse cursor relative to its current position while pressing
+        one of its buttons. By default, this is the left mouse button."""
+        self.press(button)
+        self.move_rel(x, y)
+        self.release(button)
 
     def _is_mouse_button(self, key: Key) -> bool:
         """Determines if the key is a mouse button. This includes Left, Middle, Right Buttons as well

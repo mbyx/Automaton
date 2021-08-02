@@ -20,6 +20,7 @@ class HotString(Action):
     context: Callable[[], bool]
     triggers: List[Input]
     options: List[HotStringOptions]
+    from_device: Optional[str]
 
     def emit(self, device: Peripheral, context: Context):
         context.word = ''
@@ -31,6 +32,8 @@ class HotString(Action):
 
     def should_emit(self, context: Context) -> EmissionState:
         if self.context() is False:
+            return EmissionState.DontEmit
+        if context.device_path != self.from_device and self.from_device is not None:
             return EmissionState.DontEmit
         # Check if the event triggers a hotstring.
         condition = False
