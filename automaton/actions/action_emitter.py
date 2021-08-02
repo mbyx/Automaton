@@ -13,14 +13,15 @@ class ActionEmitter:
     REMAPS: List[Remap]
     context: Context
 
+    @staticmethod
     def new() -> 'ActionEmitter':
         """Returns a default and empty version of the ActionEmitter."""
         return ActionEmitter([], [], [], Context.new())
 
-    def handle(self, event: evdev.InputEvent, device: Peripheral) -> Action:
+    def handle(self, event: evdev.InputEvent, device_path: str, device: Peripheral) -> Action:
         """Given a device and an event, determine which kind of action to perform."""
         if event.type == evdev.ecodes.EV_KEY:
-            self.context.update(event)
+            self.context.update(event, device_path)
             
             for action in self.HOTKEYS + self.HOTSTRINGS + self.REMAPS:
                 should_emit = action.should_emit(self.context)

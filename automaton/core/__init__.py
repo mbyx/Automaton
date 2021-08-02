@@ -5,3 +5,4 @@ from .input import Key, Button
 from .peripheral import Peripheral
 from .consts import *
 from .automaton import Automaton
+from .macro import Macro

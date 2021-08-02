@@ -17,7 +17,7 @@ class HotKey(Action):
     action: Callable[[], Optional[str]]
     context: Callable[[], bool]
     options: List[HotKeyOptions]
-    active_keys: List[int] = field(default_factory = List)
+    from_device: Optional[str]
 
     def emit(self, device: Peripheral, context: Context):
         if (txt := self.action()) is not None:
@@ -26,7 +26,10 @@ class HotKey(Action):
     def should_emit(self, context: Context) -> EmissionState:
         if self.context() is False:
             return EmissionState.DontEmit
-        elif list(map(lambda key: key.value, self.keys)) == context.active_keys:
+        if context.device_path != self.from_device and self.from_device is not None:
+            return EmissionState.DontEmit
+
+        elif list(map(int, self.keys)) == context.active_keys:
             if HotKeyOptions.DontSuppressKeys in self.options:
                 return EmissionState.EmitButDontSuppress
             else:
