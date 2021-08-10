@@ -26,6 +26,9 @@ app.run()
 ```
 More info in the docs (coming soon!). Until I have the docs fixed, take a look at some [examples](https://github.com/Abdul-Muiz-Iqbal/Automaton/tree/main/examples)!
 
+### Used in
+- https://github.com/Abdul-Muiz-Iqbal/MacroPad
+
 ### Requirements
 - [Python](https://python.org/download) >= 3.8
 - Libraries in [requirements.txt](https://github.com/Abdul-Muiz-Iqbal/Automaton/blob/main/requirements.txt) (duh!)
