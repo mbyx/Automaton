@@ -1,12 +1,15 @@
-from .consts import CHAR_CODES, SCANCODES, SHIFT_CODES
 from dataclasses import dataclass
 from typing import List
-from .input import Key
+
 import evdev
+
+from .. import core
+
 
 @dataclass
 class Context:
     """Container that stores the essential state of a device, and actions."""
+
     word: str
     active_keys: List[int]
     lock_states: List[int]
@@ -14,9 +17,9 @@ class Context:
     device_path: str
 
     @staticmethod
-    def new() -> 'Context':
+    def new() -> "Context":
         """Create an empty context object."""
-        return Context('', [], [], evdev.InputEvent(0, 0, 0, 0, 0), '')
+        return Context("", [], [], evdev.InputEvent(0, 0, 0, 0, 0), "")
 
     def update(self, event: evdev.InputEvent, device_path: str):
         """Updates the context with new information gathered from the event."""
@@ -28,7 +31,7 @@ class Context:
 
     def update_lock_states(self, event: evdev.InputEvent):
         """Updates the information about the lock states using the event."""
-        if event.type == evdev.ecodes.EV_KEY:
+        if event.type == evdev.ecodes.ecodes["EV_KEY"]:
             if event.value >= 1 and event.code not in self.lock_states:
                 self.lock_states.append(event.code)
             elif event.value >= 1 and event.code in self.lock_states:
@@ -37,7 +40,7 @@ class Context:
     def update_active_keys(self, event: evdev.InputEvent):
         """Updates the information about the active keys using the event."""
         # Update active_keys.
-        if event.type == evdev.ecodes.EV_KEY:
+        if event.type == evdev.ecodes.ecodes["EV_KEY"]:
             if event.value >= 1 and event.code not in self.active_keys:
                 self.active_keys.append(event.code)
             elif event.value <= 0 and event.code in self.active_keys:
@@ -45,13 +48,14 @@ class Context:
 
     def append_key(self, event: evdev.InputEvent):
         """Updates the word being currently typed."""
-        if event.type == evdev.ecodes.EV_KEY and event.value >= 1:
+        if event.type == evdev.ecodes.ecodes["EV_KEY"] and event.value >= 1:
             conditions = [
-                Key.LShift.value in self.active_keys,
-                Key.RShift.value in self.active_keys,
-                (Key.CapsLock.value in self.lock_states) and (event.code in CHAR_CODES)
+                core.Key.LShift.value in self.active_keys,
+                core.Key.RShift.value in self.active_keys,
+                (core.Key.CapsLock.value in self.lock_states)
+                and (event.code in core.CHAR_CODES),
             ]
             if any(conditions):
-                self.word += SHIFT_CODES.get(event.code) or ''
+                self.word += core.SHIFT_CODES.get(event.code) or ""
             else:
-                self.word += SCANCODES.get(event.code) or ''
+                self.word += core.SCANCODES.get(event.code) or ""
