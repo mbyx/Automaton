@@ -1,8 +1,11 @@
-from .consts import LockState, SCANCODES, SHIFT_CODES, Input
-from typing import Callable, Optional, List
 from dataclasses import dataclass, field
-from .input import Key, Button
-import evdev, pyperclip
+from typing import Callable, List, Optional
+
+import evdev
+
+from .. import core
+from .consts import SCANCODES, SHIFT_CODES, Input, LockState
+from .input import Button, Key
 
 # The inverse of SCANCODES and SHIFT_CODES
 sc = {v: k for k, v in SCANCODES.items()}
@@ -10,14 +13,16 @@ shc = {v: k for k, v in SHIFT_CODES.items()}
 
 Subscriber = Callable[[evdev.InputEvent], Optional[str]]
 
+
 @dataclass
 class Peripheral:
     """Internally used to provide keyboard input and query it. Note: All query methods
     will only work after Automaton.run() is called. This means they can only be used
     inside of action callbacks, unless you choose to use a separate thread."""
+
     ui: evdev.UInput
-    PRESS_CALLBACKS: List[Subscriber] = field(default_factory = list)
-    RELEASE_CALLBACKS: List[Subscriber] = field(default_factory = list)
+    PRESS_CALLBACKS: List[Subscriber] = field(default_factory=list)
+    RELEASE_CALLBACKS: List[Subscriber] = field(default_factory=list)
 
     def on_press(self, callback: Subscriber):
         """Registers a callback which is called when a key is pressed."""
@@ -29,21 +34,25 @@ class Peripheral:
 
     def update(self, event: evdev.InputEvent):
         """Using the given event, it determines which callback to call."""
-        callbacks = self.PRESS_CALLBACKS if event.value >= 1 else self.RELEASE_CALLBACKS
+        callbacks = (
+            self.PRESS_CALLBACKS
+            if event.value >= 1
+            else self.RELEASE_CALLBACKS
+        )
         for callback in callbacks:
             if (txt := callback(event)) is not None:
-                self.type(txt)
+                self.type_unicode(txt)
 
     def press(self, *keys: Input):
         """Presses the specified key/keys. Syncs immediately."""
         for key in keys:
-            self.ui.write(evdev.ecodes.EV_KEY, int(key), 1)
+            self.ui.write(evdev.ecodes.ecodes["EV_KEY"], int(key), 1)
             self.ui.syn()
 
     def release(self, *keys: Input):
         """Releases the specified key/keys. Syncs immediately."""
         for key in keys:
-            self.ui.write(evdev.ecodes.EV_KEY, int(key), 0)
+            self.ui.write(evdev.ecodes.ecodes["EV_KEY"], int(key), 0)
             self.ui.syn()
 
     def tap(self, *keys: Input):
@@ -52,14 +61,7 @@ class Peripheral:
         self.release(*keys)
 
     def type(self, txt: str):
-        old = pyperclip.paste()
-        pyperclip.copy(txt)
-        def paste():
-            self.press(Key.LCtrl, Key.LShift)
-            self.tap(Key.V)
-            self.release(Key.LCtrl, Key.LShift)
-        paste()
-        pyperclip.copy(old)
+        core.ActionString.parse(txt).execute(self)
 
     def type_unicode(self, txt: str):
         """Types a string of unicode characters. This works by using the Ctrl+Shift+U key combo
@@ -86,7 +88,9 @@ class Peripheral:
 
     def is_pressed(self, key: Input) -> bool:
         """Determines if the key is pressed. NOTE: This only works after redirection has started."""
-        return int(key) in self.ui.device.active_keys()
+        if self.ui.device is not None:
+            return int(key) in self.ui.device.active_keys()
+        return False
 
     def set_state(self, key: Input, state: LockState):
         """Sets the state of a lock key to ON or OFF, True or False"""
@@ -98,15 +102,14 @@ class Peripheral:
 
     def is_toggled(self, key: Input) -> bool:
         """Determines if a key (a lock key) is toggled or not."""
-        leds = self.ui.device.leds()
-        state = False
+        leds = self.ui.device.leds() if self.ui.device is not None else []
         if key == Key.NumLock:
-            state = 0 in leds
+            return 0 in leds
         elif key == Key.CapsLock:
-            state = 1 in leds
+            return 1 in leds
         elif key == Key.ScrollLock:
-            state = 2 in leds
-        return state
+            return 2 in leds
+        return False
 
     def _is_lock_key(self, key: Input) -> bool:
         """Determines whether a key is CapsLock, NumLock or ScrollLock."""
@@ -114,8 +117,12 @@ class Peripheral:
 
     def move_rel(self, x: int, y: int):
         """Moves the mouse in relative coordinates to x, y. Syncs immediately."""
-        self.ui.write(evdev.ecodes.EV_REL, evdev.ecodes.REL_X, x)
-        self.ui.write(evdev.ecodes.EV_REL, evdev.ecodes.REL_Y, y)
+        self.ui.write(
+            evdev.ecodes.ecodes["EV_REL"], evdev.ecodes.ecodes["REL_X"], x
+        )
+        self.ui.write(
+            evdev.ecodes.ecodes["EV_REL"], evdev.ecodes.ecodes["REL_Y"], y
+        )
         self.ui.syn()
 
     def drag_rel(self, x: int, y: int, button: Button = Button.LeftButton):
@@ -128,6 +135,12 @@ class Peripheral:
     def _is_mouse_button(self, key: Key) -> bool:
         """Determines if the key is a mouse button. This includes Left, Middle, Right Buttons as well
         as XButton and SideButton."""
-        if key in [Key.LeftButton, Key.RightButton, Key.MiddleButton, Key.XButton, Key.SideButton]:
+        if key in [
+            Button.LeftButton,
+            Button.RightButton,
+            Button.MiddleButton,
+            Button.XButton,
+            Button.SideButton,
+        ]:
             return True
         return False
