@@ -27,7 +27,7 @@ class HotString(Action):
     options: List[HotStringOptions]
     from_device: Optional[str]
 
-    def emit(self, device: core.Peripheral, context: Context):
+    def emit(self, device: core.Peripheral, context: Context) -> None:
         context.word = ""
         if HotStringOptions.PreventAutoBackspace not in self.options:
             for _ in range(len(self.txt)):
@@ -53,9 +53,9 @@ class HotString(Action):
             is_trigger_pressed = context.event.code in self.triggers
 
         if HotStringOptions.TriggerInsideWord in self.options:
-            comparision_method = lambda x, y: y in x
+            comparision_method: Callable[[str, str], bool] = lambda x, y: y in x
         else:
-            comparision_method = lambda x, y: x == y
+            comparision_method: Callable[[str, str], bool] = lambda x, y: (x == y)
 
         condition = is_trigger_pressed and comparision_method(word, txt)
 

@@ -1,6 +1,6 @@
 import os
 from dataclasses import astuple, dataclass
-from typing import Callable, Iterator, List, Optional, Tuple, Union, cast
+from typing import Any, Callable, Iterator, List, Optional, Tuple, Union, cast
 
 import evdev
 from multiprocess import Process, Queue, shared_memory
@@ -68,7 +68,7 @@ class Automaton:
             failsafe,
         )
 
-    def close(self):
+    def close(self) -> None:
         """Closes the dummy device"""
         self.device.ui.close()
         self.stream.stack.close()
@@ -92,7 +92,7 @@ class Automaton:
                     action = self.emitter.handle(event, device_path, queue)
 
                     if list(map(int, self.failsafe)) in [
-                        *self.emitter.context.active_keys
+                        self.emitter.context.active_keys
                     ]:
                         raise KeyboardInterrupt
 
@@ -127,12 +127,12 @@ class Automaton:
         options: List[Union[HotKeyOptions, HotStringOptions]] = [],
         triggers: List[Input] = HOTSTRING_TRIGGERS,
         from_device: Optional[str] = None,
-    ):
+    ) -> Callable[[Any], Any]:
         """Takes in either a List of keys, or a string. If a string is given, a hotstring is
         registered, otherwise a hotkey is registered. Options and context-sensitivity can be
         applied."""
 
-        def wrapper(action):
+        def wrapper(action: Any) -> Any:
             if isinstance(trigger, str):
                 hotstring = HotString(
                     trigger,
@@ -163,12 +163,12 @@ class Automaton:
         when: Callable[[], bool] = lambda: True,
         options: List[RemapOptions] = [],
         from_device: Optional[str] = None,
-    ):
+    ) -> None:
         """Remaps the src to the dest. Other options and context-sensitivity can be applied."""
         remap = Remap(src, dest, when, options, KeyState.Press, from_device)
         self.emitter.remaps.append(remap)
 
-    def enable_scroll_lock(self):
+    def enable_scroll_lock(self) -> None:
         """Hack that allows the usage of ScrollLock. Must always be called if you
         want to use ScrollLock. Note: This requires xmodmap to be installed."""
         os.system("xmodmap -e 'add mod3 = Scroll_Lock'")

@@ -93,7 +93,7 @@ SHIFT_CODES: Dict[int, str] = {
     37: "K",
     38: "L",
     39: ":",
-    40: "'",
+    40: '"',
     41: "~",
     43: "|",
     44: "Z",
@@ -138,7 +138,8 @@ CHAR_CODES: List[int] = [
     50,
 ]
 
-# The default keys that have to be pressed in order for a hotstring to activate. Can be changed.
+# The default keys that have to be pressed in order for a
+# hotstring to activate. Can be changed.
 HOTSTRING_TRIGGERS: List[Input] = [
     Key.Space,
     Key.Backspace,
