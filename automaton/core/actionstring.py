@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from string import Formatter
-from typing import List, Union
+from typing import List, Union, cast
 
 from automaton.core.peripheral import Peripheral
 
@@ -36,14 +36,14 @@ class ActionString:
                 def lookup_input(key: str) -> Input:
                     for k in [*Key, *Button]:
                         if k.name.lower() == key.lower():
-                            return k
+                            return cast(Key, k)
                     return Key.Reserved
 
                 keys: List[Input] = list(map(lookup_input, key_combo.split("+")))
                 actions.append(KeyCombo(keys, state.lower()))
         return ActionString(actions)
 
-    def execute(self, device: Peripheral):
+    def execute(self, device: Peripheral) -> None:
         method = {
             "up": device.release,
             "down": device.press,

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import Any, List
 
 import evdev
 
@@ -21,7 +21,7 @@ class Context:
         """Create an empty context object."""
         return Context("", [], [], evdev.InputEvent(0, 0, 0, 0, 0), "")
 
-    def update(self, event: evdev.InputEvent, device_path: str):
+    def update(self, event: evdev.InputEvent, device_path: str) -> None:
         """Updates the context with new information gathered from the event."""
         self.update_active_keys(event)
         self.update_lock_states(event)
@@ -29,7 +29,7 @@ class Context:
         self.event = event
         self.device_path = device_path
 
-    def update_lock_states(self, event: evdev.InputEvent):
+    def update_lock_states(self, event: evdev.InputEvent) -> None:
         """Updates the information about the lock states using the event."""
         if event.type == evdev.ecodes.ecodes["EV_KEY"]:
             if event.value >= 1 and event.code not in self.lock_states:
@@ -37,7 +37,7 @@ class Context:
             elif event.value >= 1 and event.code in self.lock_states:
                 self.lock_states.remove(event.code)
 
-    def update_active_keys(self, event: evdev.InputEvent):
+    def update_active_keys(self, event: evdev.InputEvent) -> None:
         """Updates the information about the active keys using the event."""
         # Update active_keys.
         if event.type == evdev.ecodes.ecodes["EV_KEY"]:
@@ -46,7 +46,7 @@ class Context:
             elif event.value <= 0 and event.code in self.active_keys:
                 self.active_keys.remove(event.code)
 
-    def append_key(self, event: evdev.InputEvent):
+    def append_key(self, event: evdev.InputEvent) -> None:
         """Updates the word being currently typed."""
         if event.type == evdev.ecodes.ecodes["EV_KEY"] and event.value >= 1:
             conditions = [

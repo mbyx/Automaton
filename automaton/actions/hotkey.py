@@ -24,17 +24,14 @@ class HotKey(Action):
     options: List[HotKeyOptions]
     from_device: Optional[str]
 
-    def emit(self, device: core.Peripheral, context: Context):
+    def emit(self, device: core.Peripheral, context: Context) -> None:
         if (txt := self.action()) is not None:
             device.type_unicode(txt)
 
     def should_emit(self, context: Context) -> core.EmissionState:
         if self.context() is False:
             return core.EmissionState.DontEmit
-        if (
-            context.device_path != self.from_device
-            and self.from_device is not None
-        ):
+        if context.device_path != self.from_device and self.from_device is not None:
             return core.EmissionState.DontEmit
 
         elif list(map(int, self.keys)) == context.active_keys:

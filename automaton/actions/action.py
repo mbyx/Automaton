@@ -8,7 +8,7 @@ class Action(ABC):
     """Represents an action that can be emitted, and can determine when to emit."""
 
     @abstractmethod
-    def emit(self, device: core.Peripheral, context: Context):
+    def emit(self, device: core.Peripheral, context: Context) -> None:
         """Using the device and context, perform a series of actions."""
         pass
 
