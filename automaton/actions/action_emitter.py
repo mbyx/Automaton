@@ -24,9 +24,7 @@ class ActionEmitter:
         """Returns a default and empty version of the ActionEmitter."""
         return ActionEmitter([], [], [], Context.new())
 
-    def handle(
-        self, event: evdev.InputEvent, device_path: str, queue: Queue
-    ) -> Action:
+    def handle(self, event: evdev.InputEvent, device_path: str, queue: Queue) -> Action:
         """Given a device and an event, determine which kind of action to perform."""
         if event.type == evdev.ecodes.ecodes["EV_KEY"]:
             self.context.update(event, device_path)
@@ -41,7 +39,7 @@ class ActionEmitter:
                 if should_emit is core.EmissionState.Emit:
                     return action
                 elif should_emit is core.EmissionState.EmitButDontSuppress:
-                    queue.put_nowait(action)
+                    queue.put_nowait((event, device_path))
                     break
             if self.context.event.code in list(
                 map(lambda key: int(key), core.HOTSTRING_TRIGGERS)

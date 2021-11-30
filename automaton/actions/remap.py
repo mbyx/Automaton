@@ -25,10 +25,7 @@ class Remap(Action):
     from_device: Optional[str]
 
     def emit(self, device: core.Peripheral, context: Context):
-        if (
-            self.state is core.KeyState.Press
-            or self.state is core.KeyState.Hold
-        ):
+        if self.state is core.KeyState.Press or self.state is core.KeyState.Hold:
             device.press(self.dest)
         else:
             device.release(self.dest)
@@ -36,10 +33,7 @@ class Remap(Action):
     def should_emit(self, context: Context) -> core.EmissionState:
         if self.context() is False:
             return core.EmissionState.DontEmit
-        if (
-            context.device_path != self.from_device
-            and self.from_device is not None
-        ):
+        if context.device_path != self.from_device and self.from_device is not None:
             return core.EmissionState.DontEmit
 
         # Check if the event can be remapped.
