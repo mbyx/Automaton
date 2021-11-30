@@ -20,7 +20,7 @@ class Macro:
     emitter: ActionEmitter
     device: Peripheral
 
-    def play(self, speed: int = 0):
+    def play(self, speed: int = 0) -> None:
         """Plays the macro that has been recorded or loaded in."""
         prev_time = None
         for event in self.events:

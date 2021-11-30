@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Callable
 
 from .. import core
 from .action import Action
@@ -19,12 +19,12 @@ class Remap(Action):
 
     src: core.Input
     dest: core.Input
-    context: core.Callable[[], bool]
+    context: Callable[[], bool]
     options: List[RemapOptions]
     state: core.KeyState
     from_device: Optional[str]
 
-    def emit(self, device: core.Peripheral, context: Context):
+    def emit(self, device: core.Peripheral, context: Context) -> None:
         if self.state is core.KeyState.Press or self.state is core.KeyState.Hold:
             device.press(self.dest)
         else:

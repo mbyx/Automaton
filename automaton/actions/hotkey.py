@@ -24,7 +24,7 @@ class HotKey(Action):
     options: List[HotKeyOptions]
     from_device: Optional[str]
 
-    def emit(self, device: core.Peripheral, context: Context):
+    def emit(self, device: core.Peripheral, context: Context) -> None:
         if (txt := self.action()) is not None:
             device.type_unicode(txt)
 

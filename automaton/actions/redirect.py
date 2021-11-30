@@ -13,6 +13,6 @@ class Redirect(Action):
 
     event: evdev.InputEvent
 
-    def emit(self, device: core.Peripheral, context: Context):
+    def emit(self, device: core.Peripheral, context: Context) -> None:
         device.ui.write(self.event.type, self.event.code, self.event.value)
         device.ui.syn()

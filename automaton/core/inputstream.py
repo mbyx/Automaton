@@ -1,7 +1,7 @@
 import contextlib
 import select
 from dataclasses import dataclass
-from typing import Iterator, List, Tuple
+from typing import ContextManager, Iterator, List, Tuple, cast, Any
 
 import evdev
 
@@ -10,7 +10,8 @@ from .device import Device
 
 @dataclass
 class InputStream:
-    """A Stream that reads events from a set of devices and yields them as a generator."""
+    """A Stream that reads events from a set
+    of devices and yields them as a generator."""
 
     devices: List[Device]
     stack: contextlib.ExitStack
@@ -19,8 +20,10 @@ class InputStream:
     def new(devices: List[str]) -> "InputStream":
         stack = contextlib.ExitStack()
         # Create Devices that allow cleanup on exiting.
-        devs = [
-            stack.enter_context(Device(evdev.InputDevice(dev)))
+        devs: List[Device] = [
+            stack.enter_context(
+                cast(ContextManager[Any], Device(evdev.InputDevice(dev)))
+            )
             for dev in devices
         ]
         return InputStream(devs, stack)
@@ -40,7 +43,7 @@ class InputStream:
                 for event in devices[fd].read():
                     yield event, devices[fd].path
 
-    def grab_devices(self):
+    def grab_devices(self) -> None:
         """Grabs all devices; prevents keypresses from being registered."""
         # Do not grab until all keys are released. Prevents weirdness.
         while any(
