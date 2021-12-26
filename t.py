@@ -1,13 +1,14 @@
-from automaton import Automaton, Key, Button, Peripheral, LockState
-from enum import Enum
-import evdev, os
 import atexit
+import os
+from enum import Enum
 
-from automaton.actions.hotstring import HotStringOptions
+import evdev
+
+from automaton import Automaton, Button, Key, LockState, Peripheral, HotStringOptions
 
 atexit.register(lambda: os.system("xset -led named 'Scroll Lock'"))
 
-DEVICES: list[str] = ["/dev/input/event5", "/dev/input/event4"]
+DEVICES: list[str] = ["/dev/input/event3", "/dev/input/event4"]
 SCROLL_LOCK_TOGGLE = False
 
 

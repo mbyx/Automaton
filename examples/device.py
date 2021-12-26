@@ -16,9 +16,7 @@ app.device.tap(Key.LShift)  # Presses and releases the left shift key
 app.device.tap(Key.LCtrl, Key.LShift)
 
 # NOTE: This method works only on Gtk apps. Use type_ascii for a general one.
-app.device.type_unicode(
-    "Hello, World!"
-)  # Types a string. Can be any utf-8 value.
+app.device.type_unicode("Hello, World!")  # Types a string. Can be any utf-8 value.
 
 app.device.is_pressed(Key.LShift)  # Returns True if left shift is pressed.
 app.device.is_toggled(Key.CapsLock)  # Returns True if capslock is toggled on
