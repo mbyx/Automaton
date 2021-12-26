@@ -1,7 +1,7 @@
 import contextlib
 import select
 from dataclasses import dataclass
-from typing import ContextManager, Iterator, List, Tuple, cast, Any
+from typing import Any, ContextManager, Iterator, List, Tuple, cast
 
 import evdev
 

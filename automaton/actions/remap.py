@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional, Callable
+from typing import Callable, List, Optional
 
 from .. import core
 from .action import Action

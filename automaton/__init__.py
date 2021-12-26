@@ -1,9 +1,10 @@
-import os
-from dataclasses import astuple, dataclass
+import os, traceback, time
+from dataclasses import dataclass
 from typing import Any, Callable, Iterator, List, Optional, Tuple, Union, cast
 
 import evdev
-from multiprocess import Process, Queue, shared_memory
+
+from multiprocess import Process, Queue
 
 from .actions import (
     Action,
@@ -83,31 +84,37 @@ class Automaton:
         """Starts the automaton main loop. This has to be called in order for automaton to function.
         It functions by redirection and suppression of events from slave devices into the master device.
         The middleman performs all the logic."""
+        queue = Queue()
+        error_queue = Queue()
+
+        def process_events(queue: Queue, error_queue: Queue) -> None:
+            while True:
+                event, device_path = queue.get()
+                action = self.emitter.handle(event, device_path, queue)
+
+                if list(map(int, self.failsafe)) == self.emitter.context.active_keys:
+                    error_queue.put_nowait(1)
+
+                action.emit(self.device, self.emitter.context)
+
+        proc = Process(target=process_events, args=(queue, error_queue))
+        proc.start()
+
         try:
-            queue = Queue()
-
-            def process_events(queue: Queue) -> None:
-                while True:
-                    event, device_path = queue.get()
-                    action = self.emitter.handle(event, device_path, queue)
-
-                    if list(map(int, self.failsafe)) in [
-                        self.emitter.context.active_keys
-                    ]:
-                        raise KeyboardInterrupt
-
-                    action.emit(self.device, self.emitter.context)
-
-            proc = Process(target=process_events, args=(queue,))
-            proc.start()
-
             self.stream.grab_devices()
             for event, device_path in self._get_event():
-                self.device.update(event)
-                queue.put_nowait((event, device_path))
+                try:
+                    _ = error_queue.get_nowait()
+                    break
+                except:
+                    self.device.update(event)
+                    queue.put_nowait((event, device_path))
 
-            proc.join()
+        except KeyboardInterrupt:
+            pass
+
         finally:
+            proc.join()
             self.close()
 
     def record_until(self, condition: Callable[[], bool]) -> Macro:

@@ -3,9 +3,9 @@ import setuptools
 
 PROJECT_REPOSITORY: str = "https://github.com/Abdul-Muiz-Iqbal/Automaton"
 
-PROJECT_VERSION: str = requests.get(
-    f"{PROJECT_REPOSITORY}/releases/latest"
-).url.split("/")[-1]
+PROJECT_VERSION: str = requests.get(f"{PROJECT_REPOSITORY}/releases/latest").url.split(
+    "/"
+)[-1]
 
 with open("README.md", "r") as f:
     PROJECT_DESCRIPTION: str = f.read()
