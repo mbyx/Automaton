@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "automaton-linux"
 version = "1.2.2"
-description = "An automation library for linux that uses UInput via evdev."
+description = "An automation library for linux."
 authors = ["Abdul-Muiz-Iqbal"]
 license = "MIT"
 

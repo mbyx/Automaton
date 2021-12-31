@@ -175,11 +175,6 @@ class Automaton:
         remap = Remap(src, dest, when, options, KeyState.Press, from_device)
         self.emitter.remaps.append(remap)
 
-    def enable_scroll_lock(self) -> None:
-        """Hack that allows the usage of ScrollLock. Must always be called if you
-        want to use ScrollLock. Note: This requires xmodmap to be installed."""
-        os.system("xmodmap -e 'add mod3 = Scroll_Lock'")
-
 
 __all__ = [
     "Automaton",

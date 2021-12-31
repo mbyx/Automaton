@@ -34,36 +34,34 @@ def shift_a():
 # There are different modifiers for each action. You can get these from automaton.actions:
 from automaton.actions import HotKeyOptions, HotStringOptions, RemapOptions
 
-
-# HotStringOptions.CaseSensitive
-# HotStringOptions.TriggerInsideWord Allows hotstring to be triggered even if the trigger text is inside the currently typed word
-# Eg:
+# `HotStringOptions.TriggerInsideWord` Allows hotstring to be triggered even if the trigger text is inside the currently typed word
+# Eg: 
 @app.on("btw", options=[HotStringOptions.TriggerInsideWord])
-def btw():  # Typing shlbtw will expand to shl by the way
+def btw():  # Typing 'shlbtw' will expand to 'shl by the way'
     return "by the way"
 
 
-# HotStringOptions.TriggerImmediately When applied, does not require a trigger key to activate
-# HotStringOptions.PreventAutoBackspace When a hotstring is triggered and is a text replacement, do not auto backspace.
+# `HotStringOptions.TriggerImmediately` When applied, does not require a trigger key to activate
+# `HotStringOptions.PreventAutoBackspace` When a hotstring is triggered and is a text replacement, do not auto backspace.
 
-# RemapOptions.DontSuppressKeys When applied, both the src and dest keys are pressed/released
-# HotKeyOptions.DontSuppressKeys When applied, the hotkey such as LShift+A will not suppress 'A'
+# `RemapOptions.DontSuppressKeys` When applied, both the src and dest keys are pressed/released
+# `HotKeyOptions.DontSuppressKeys` When applied, the hotkey such as LShift+A will not suppress 'A'
 
-# Remaps are registered by calling remap and passing in src and dest keys.
-# The src key is suppressed and replaced by the dest key. Here, Numpad4 is remapped to the left button of the mouse.
+# Remaps are registered by calling remap and passing in `src` and `dest` keys.
+# The `src` key is suppressed and replaced by the `dest` key. Here, Numpad4 is remapped to the left button of the mouse.
 app.remap(Key.Numpad4, Button.LeftButton)
 
-# ADVANCED
-# Hotstrings, Hotkeys and remaps have a keyword arg called register_if. These actions
-# are activated if register_if() returns True. Otherwise, the action never happens.
+# Hotstrings, Hotkeys and remaps have a keyword arg called `when`. These actions
+# are activated if `when()` returns True. Otherwise, the action never happens.
+# when should have the type: `Callable[[], bool]`
 # Remaps K to A only IF 1 == 2. So never.
-app.remap(Key.K, Key.A, when=lambda: 1 == 2)
+app.remap(Key.K, Key.A, when = lambda: 1 == 2)
 
 # You can also emit callbacks when any key is pressed or released:
-app.device.on_press(lambda event: print(event.code))
-app.device.on_release(lambda event: print(event.code))
+app.device.on_press(lambda event: print(f"{event.code} Pressed!"))
+app.device.on_release(lambda event: print(f"{event.code} Released!"))
 
 # Multiple callbacks are allowed.
 app.device.on_press(lambda event: print(event.value))
 
-app.run()  # Start listening and redirecting events. Hotkeys and such won't work without this.
+app.run()  # Start listening and redirecting events. Monitoring won't work without this.

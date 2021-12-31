@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     version=PROJECT_VERSION,
     license="MIT",
-    description="An automation library for linux that uses UInput via evdev.",
+    description="An automation library for linux.",
     long_description=PROJECT_DESCRIPTION,
     long_description_content_type="text/markdown",
     author="Abdul Muiz Iqbal",

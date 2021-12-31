@@ -13,12 +13,12 @@
 
 </div>
 
-Automaton is a library based on uinput designed to be a substitute for autohotkey in linux.
-It has support for HotKeys, HotStrings, and Remaps with configurable options, context sensitivity, and device manipulation.
+Automaton is a library based on uinput designed to be a substitute for [AutoHotkey](https://www.autohotkey.com/) in linux.
+It has support for hotkeys, hotstrings, and remaps with configurable options, context sensitivity, and device manipulation.
 
 ### Note
 Automaton supports only Linux.
-Automaton uses uinput in order to work. Therefore, install Automaton and run its apps via:
+Automaton uses uinput in order to work. So your user should either be in the input group, or install Automaton and run scripts as:
 ```shell
 sudo pip install automaton-linux
 sudo python3 main.py # main.py contains the Automaton app
@@ -29,13 +29,19 @@ A simple Automaton script looks like:
 ```python3
 from automaton import Automaton
 
-app = Automaton.new()
+# devices is a list of paths to the devices that you want to manipulate or monitor.
+# More information on how to get the path for your device is in the [Manual](https://abdul-muiz-iqbal.github.io/Automaton/index.html)
+app = Automaton.new(devices = [
+  '/dev/input/event5',
+  '/dev/input/event6'
+])
 
+# When btw is typed, hit space. It should be replaced with 'by the way'
 @app.on("btw")
 def btw():
     return "by the way"
     
-app.run()
+app.run() # Blocking.
 ```
 More info in the [docs](https://abdul-muiz-iqbal.github.io/Automaton/index.html), or take a look at some [examples](https://github.com/Abdul-Muiz-Iqbal/Automaton/tree/main/examples)!
 
