@@ -1,9 +1,8 @@
-import os, traceback, time
 from dataclasses import dataclass
+from queue import Empty
 from typing import Any, Callable, Iterator, List, Optional, Tuple, Union, cast
 
 import evdev
-
 from multiprocess import Process, Queue
 
 from .actions import (
@@ -106,7 +105,7 @@ class Automaton:
                 try:
                     _ = error_queue.get_nowait()
                     break
-                except:
+                except Empty:
                     self.device.update(event)
                     queue.put_nowait((event, device_path))
 

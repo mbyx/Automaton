@@ -34,8 +34,9 @@ def shift_a():
 # There are different modifiers for each action. You can get these from automaton.actions:
 from automaton.actions import HotKeyOptions, HotStringOptions, RemapOptions
 
+
 # `HotStringOptions.TriggerInsideWord` Allows hotstring to be triggered even if the trigger text is inside the currently typed word
-# Eg: 
+# Eg:
 @app.on("btw", options=[HotStringOptions.TriggerInsideWord])
 def btw():  # Typing 'shlbtw' will expand to 'shl by the way'
     return "by the way"
@@ -55,7 +56,7 @@ app.remap(Key.Numpad4, Button.LeftButton)
 # are activated if `when()` returns True. Otherwise, the action never happens.
 # when should have the type: `Callable[[], bool]`
 # Remaps K to A only IF 1 == 2. So never.
-app.remap(Key.K, Key.A, when = lambda: 1 == 2)
+app.remap(Key.K, Key.A, when=lambda: 1 == 2)
 
 # You can also emit callbacks when any key is pressed or released:
 app.device.on_press(lambda event: print(f"{event.code} Pressed!"))

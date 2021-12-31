@@ -1,4 +1,4 @@
-from automaton import Automaton, Key, Button, LockState
+from automaton import Automaton, Button, Key, LockState
 
 # Remember to change to your device path.
 app = Automaton.new(devices=["/dev/input/event6", "/dev/input/event5"])
@@ -30,6 +30,8 @@ app.device.set_state(Key.CapsLock, LockState.On)  # Toggles the capslock on.
 # (0, 5) ============== (5, 5)
 
 app.device.move_rel(100, 100)  # Moves 100px Left and 100px Down.
-app.device.drag_rel(10, 100, Button.MiddleButton) # Drag the middle mouse button 10px Left and 100px Down.
+app.device.drag_rel(
+    10, 100, Button.MiddleButton
+)  # Drag the middle mouse button 10px Left and 100px Down.
 
 app.run()
