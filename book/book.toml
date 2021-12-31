@@ -1,6 +1,0 @@
-[book]
-authors = ["Abdul-Muiz-Iqbal"]
-language = "en"
-multilingual = false
-src = "src"
-title = "Automaton Manual"
