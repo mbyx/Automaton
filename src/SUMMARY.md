@@ -4,7 +4,7 @@
 - [Background](background.md)
 - [Installation](installation.md)
 - [QuickStart](quickstart.md)
-- [Api](api/README.md)
+- [API](api/README.md)
     - [Automaton](api/automaton.md)
     - [Actions](api/actions/README.md)
         - [Remap](api/actions/remap.md)
