@@ -2,6 +2,8 @@ name: docs
 
 on:
   push:
+    branches:
+      - 'book'
   workflow_dispatch:
 
 jobs:
@@ -16,14 +18,16 @@ jobs:
       - name: mdbook
         uses:  peaceiris/actions-mdbook@v1
         with:
-          version: latest
+          mdbook-version: latest
       
       - name: deploy
         env:
           email: ${{ secrets.FACTOT_EMAIL }}
         run: |
           cd $GITHUB_WORKSPACE
-          git checkout book
+          git remote update
+          git fetch
+          git checkout --track origin/book
           mdbook build
           git config user.name factot
           git config user.email $email
