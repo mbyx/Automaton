@@ -1,0 +1,31 @@
+name: docs
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.FACTOT_PAT }}
+        
+      - name: mdbook
+        uses:  peaceiris/actions-mdbook@v1
+        with:
+          version: latest
+      
+      - name: deploy
+        env:
+          email: ${{ secrets.FACTOT_EMAIL }}
+        run: |
+          cd $GITHUB_WORKSPACE
+          git checkout book
+          mdbook build
+          git config user.name factot
+          git config user.email $email
+          git add * && git commit -m "book: build docs"
+          git push origin book
