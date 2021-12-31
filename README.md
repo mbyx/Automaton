@@ -30,7 +30,7 @@ A simple Automaton script looks like:
 from automaton import Automaton
 
 # devices is a list of paths to the devices that you want to manipulate or monitor.
-# More information on how to get the path for your device is in the [Manual](https://abdul-muiz-iqbal.github.io/Automaton/index.html)
+# More information on how to get the path for your device is in the Manual
 app = Automaton.new(devices = [
   '/dev/input/event5',
   '/dev/input/event6'
