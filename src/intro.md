@@ -21,5 +21,5 @@ Here's a neat table that summarizes the pros and cons of Automaton, because tabl
 | --- | --- |
 | It can be used on *all* Linux distros. | It does not work on Windows. |
 | It offers (almost) complete feature-parity with AHK. | |
-| It supports unicode (such as 䔄) unlike [some libraries I could mention](https://pypi.org/project/keyboard/) |
+| It supports unicode (such as 䔄) unlike [some libraries I could mention](https://pypi.org/project/keyboard/). |
 | It supports key compression. | |
