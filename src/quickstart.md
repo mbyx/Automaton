@@ -1,4 +1,4 @@
-# QuickStart
+# Quickstart
 
 A simple Automaton app might look like this:
 ```
@@ -13,8 +13,6 @@ app.remap(Key.A, Key.K)
 
 app.run()
 ```
-
-Alright, so what's happening here?  
 
 On line 1, we import everything that we need from Automaton, which is usually everything and the kitchen sink.  
 

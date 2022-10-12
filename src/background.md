@@ -11,4 +11,4 @@ by-path/  event1  event11  event13  event3  event5  event7  event9  mouse0  mous
 
 Automaton uses these files to function, but you (as the user) must specify what device you want to capture inputs from. For example, my keyboard and mouse correspond to `/dev/input/event5` and `/dev/input/event4`.
 
-Keep in mind that these paths may change everytime the device is disconnected and reconnected (such as when powering off). To figure out which of these files represent your chosen devices, refer to the [next page](/src/installation.md).
+Keep in mind that these paths may change everytime the device is disconnected and reconnected (such as when powering off). To figure out which of these files represent your chosen devices, refer to the [next page](installation.md).

@@ -17,4 +17,4 @@ for device in Automaton.find_devices():
 ```
 This should output each device in the format, ```name :: path```. These paths may change when a device reconnects, however its name will remain the same.
 
-Find the path of your keyboard and mouse, then proceed to the [next page](/src/quickstart.md).
+Find the path of your keyboard and mouse, then proceed to the [next page](quickstart.md).
